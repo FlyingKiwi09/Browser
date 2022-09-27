@@ -5,6 +5,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,13 +18,18 @@ public class MyTab extends Tab {
 	
 
 	private VBox banner = new VBox();
-	private WebView webView;
+	private WebView webView = new WebView();;
 	private Button go;
 	private TextField textField = new TextField();
 	private double zoomLevel;
+	private WebHistory history;
+	private ObservableList<WebHistory.Entry> entries;
+	
+	String URL;
 
 	public MyTab() { 
-		
+		history = webView.getEngine().getHistory();
+		entries = history.getEntries();
 		zoomLevel = 1;
 		
 		go = new Button();
@@ -32,6 +39,7 @@ public class MyTab extends Tab {
 			@Override
 			public void handle(MouseEvent arg0) {
 				load("http://"+textField.getText());
+				textField.textProperty().bind(webView.getEngine().locationProperty()); // rebind the textField to the webpage URL
 			}
 			
 		}) ;
@@ -87,8 +95,40 @@ public class MyTab extends Tab {
 			
 		});
 		
-		textField = new TextField();
-		webView = new WebView();
+		
+		
+		
+		// bind the title of the webpage to the tab text
+		this.textProperty().bind(webView.getEngine().titleProperty());
+		
+		
+		// set up the textField
+
+		// bind the url of the webpage to the textField
+		textField.textProperty().bind(webView.getEngine().locationProperty());
+		
+		// unbind when the user clicks the textField to enter a URL
+		textField.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				textField.textProperty().unbind();
+			}
+			
+		});
+		
+		// set textField to search on enter
+		textField.setOnKeyPressed(new EventHandler<KeyEvent>() { // used KeyPressed because KeyCode for enter is undefined when using KeyTyped
+			@Override
+			public void handle(KeyEvent evt) {
+			    if(evt.getCode() == KeyCode.ENTER) {
+			    	load("http://"+textField.getText());
+					textField.textProperty().bind(webView.getEngine().locationProperty()); // rebind the textField to the webpage URL          
+			    }     
+			}
+			
+		});
+	
 	
 		HBox controlsHBox = new HBox();
 		controlsHBox.getChildren().addAll(back, forward, reload, textField, go, zoomOut, zoomIn);
@@ -105,11 +145,11 @@ public class MyTab extends Tab {
 	
 	public void load(String URL) {
 		this.webView.getEngine().load(URL);
-		this.setText(URL);
+//		this.setText(URL);
 	}
 	
 	private void forward() {
-		WebHistory history = webView.getEngine().getHistory();
+		
 		ObservableList<WebHistory.Entry> entries = history.getEntries();
 		history.go(1);
 		textField.setText(entries.get(history.getCurrentIndex()).getUrl());
@@ -121,8 +161,8 @@ public class MyTab extends Tab {
 	}
 	
 	private void backward() {
-		WebHistory history = webView.getEngine().getHistory();
-		ObservableList<WebHistory.Entry> entries = history.getEntries();
+	 
+		
 		history.go(-1);
 		textField.setText(entries.get(history.getCurrentIndex()).getUrl());
 		setTabText();
@@ -130,8 +170,8 @@ public class MyTab extends Tab {
 	}
 	
 	private void setTabText() {
-		WebHistory history = webView.getEngine().getHistory();
-		ObservableList<WebHistory.Entry> entries = history.getEntries();
+		
+		
 		String text = entries.get(history.getCurrentIndex()).getTitle();
 		if (text.length() > 10) {
 			text = text.substring(0, 10);
