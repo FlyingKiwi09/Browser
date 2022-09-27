@@ -110,4 +110,5 @@ public class Browser extends Application {
 		history.go(-1);
 	}
 	
+
 }

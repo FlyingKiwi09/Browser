@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 
@@ -18,11 +19,14 @@ public class MyTab extends Tab {
 	private WebView webView;
 	private Button go;
 	private TextField textField = new TextField();
+	private double zoomLevel;
 
 	public MyTab() { 
 		
+		zoomLevel = 1;
+		
 		go = new Button();
-		go.setText("launch");
+		go.setText("go");
 		go.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -63,10 +67,31 @@ public class MyTab extends Tab {
 			
 		});
 		
+		Button zoomIn = new Button("+");
+		zoomIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				zoomIn();
+			}
+			
+		});
+		
+		Button zoomOut = new Button("-");
+		zoomOut.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				zoomOut();
+			}
+			
+		});
+		
 		textField = new TextField();
 		webView = new WebView();
+	
 		HBox controlsHBox = new HBox();
-		controlsHBox.getChildren().addAll(back, forward, reload, textField, go);
+		controlsHBox.getChildren().addAll(back, forward, reload, textField, go, zoomOut, zoomIn);
 		
 		
 		
@@ -114,4 +139,15 @@ public class MyTab extends Tab {
 		}
 		this.setText(text);
 	}
+	
+	private void zoomIn() {
+		zoomLevel = zoomLevel+0.1;
+		this.webView.setZoom(zoomLevel);
+	}
+	
+	private void zoomOut() {
+		zoomLevel = zoomLevel-0.1;
+		this.webView.setZoom(zoomLevel);
+	}
+	
 }
