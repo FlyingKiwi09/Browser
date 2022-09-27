@@ -52,7 +52,18 @@ public class Browser extends Application {
 			
 		}) ;
 		
-		mainMenu.getChildren().add(newTabButton);
+		Button history = new Button("History");
+		history.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				displayHistory();
+			}
+			
+		}) ;
+		
+		
+		mainMenu.getChildren().addAll(newTabButton, history);
 		
 		VBox root = new VBox();
 		root.getChildren().addAll (mainMenu, tabPane);
@@ -110,5 +121,16 @@ public class Browser extends Application {
 		history.go(-1);
 	}
 	
+	public void displayHistory() {
+		for (MyTab tab : tabs) {
+			WebHistory history = tab.getWebView().getEngine().getHistory();
+			ObservableList<WebHistory.Entry> entries = history.getEntries();
+			
+			for (WebHistory.Entry entry: entries) {
+				System.out.println(entry);
+			}
+			
+		}
+	}
 
 }

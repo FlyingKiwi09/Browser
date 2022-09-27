@@ -149,5 +149,17 @@ public class MyTab extends Tab {
 		zoomLevel = zoomLevel-0.1;
 		this.webView.setZoom(zoomLevel);
 	}
+
+	
+	// getters and setters
+	public WebView getWebView() {
+		return webView;
+	}
+
+	public void setWebView(WebView webView) {
+		this.webView = webView;
+	}
+	
+	
 	
 }
