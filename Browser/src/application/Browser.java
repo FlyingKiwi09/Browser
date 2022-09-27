@@ -169,7 +169,7 @@ public class Browser extends Application {
 			
 		});
 		
-		
+		TextField textField = new TextField();
 		
 		HBox controlsHBox = new HBox();
 		controlsHBox.getChildren().addAll(newTabButton, back, forward, reload, textField, launch);
