@@ -1,9 +1,13 @@
 package application;
 	
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -27,22 +31,17 @@ public class Browser extends Application {
 	private TextField textField = new TextField();
 //	private HBox tabBar = new HBox(); 
 	private TabPane tabPane = new TabPane();
-	private HashMap<Button, WebView> tabButtonMap = new HashMap<Button, WebView >();
+	private HashMap<Tab, WebView> tabViewMap = new HashMap<Tab, WebView >();
+	private ArrayList<MyTab> tabs = new ArrayList<MyTab>();
+	
 	
 	@Override
 	public void start(Stage primaryStage) {
 	
-		Button launch = new Button();
-		launch.setText("launch");
-		launch.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				load();
-			}
-			
-		}) ;
 		
+		
+		newTab();
+		HBox mainMenu = new HBox();
 		Button newTabButton = new Button("New Tab");
 		newTabButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -51,47 +50,12 @@ public class Browser extends Application {
 				newTab();
 			}
 			
-		});
+		}) ;
 		
-//		tabBar.getChildren().add(newTabButton);
-		
-		newTab();
-		
-		Button forward = new Button("Forward");
-		forward.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				forward();
-			}
-			
-		});
-		
-		Button back = new Button("Back");
-		back.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				backward();
-			}
-			
-		});
-		
-		Button reload = new Button("Reload");
-		reload.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				reload();
-			}
-			
-		});
-		
-		
-		
+		mainMenu.getChildren().add(newTabButton);
 		
 		VBox root = new VBox();
-		root.getChildren().addAll (tabPane);
+		root.getChildren().addAll (mainMenu, tabPane);
 		
 		//Set growth parameters
 		VBox.setVgrow(active, Priority.ALWAYS);
@@ -109,81 +73,11 @@ public class Browser extends Application {
 	}
 	
 	public void newTab() {
-		Tab newTab = new Tab();
-		
-		VBox banner = new VBox();
-		
-		
-		Button launch = new Button();
-		launch.setText("launch");
-		launch.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				load();
-			}
-			
-		}) ;
-		
-		Button newTabButton = new Button("New Tab");
-		newTabButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				newTab();
-			}
-			
-		});
-		
-//		tabBar.getChildren().add(newTabButton);
-		
-		
-		
-		Button forward = new Button("Forward");
-		forward.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				forward();
-			}
-			
-		});
-		
-		Button back = new Button("Back");
-		back.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				backward();
-			}
-			
-		});
-		
-		Button reload = new Button("Reload");
-		reload.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				reload();
-			}
-			
-		});
-		
-		TextField textField = new TextField();
-		
-		HBox controlsHBox = new HBox();
-		controlsHBox.getChildren().addAll(newTabButton, back, forward, reload, textField, launch);
-		
-		
-		WebView newWebView = new WebView();
-		// The WebEngine manages web pages non-visually (loading, reloading, error handling etc)
-		String newURL = "http://" + home;
-		newWebView.getEngine().load(newURL);
-		newTab.setContent(banner);
-		banner.getChildren().add(controlsHBox);
-		banner.getChildren().add(newWebView);
-		newTab.setText(newURL);
+		MyTab newTab = new MyTab();
+		newTab.load("http://"+home);
+		tabs.add(newTab);
 		tabPane.getTabs().add(newTab);
+
 	}
 	
 	public void reloadTabs(WebView view, String URL) {
@@ -194,9 +88,9 @@ public class Browser extends Application {
 	
 	
 	
-	private void load() {
+	private void load(WebView webView) {
 		String newURL = "http://" + textField.getText();
-		active.getEngine().load(newURL);
+		webView.getEngine().load(newURL);
 //		tabButtonMap.get(active).setText(newURL);
 	}
 	
