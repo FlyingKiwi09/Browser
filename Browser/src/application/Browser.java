@@ -87,12 +87,11 @@ public class Browser extends Application {
 			
 		});
 		
-		HBox controlsHBox = new HBox();
-		controlsHBox.getChildren().addAll(newTabButton, back, forward, reload, textField, launch);
+		
 		
 		
 		VBox root = new VBox();
-		root.getChildren().addAll (controlsHBox, tabPane);
+		root.getChildren().addAll (tabPane);
 		
 		//Set growth parameters
 		VBox.setVgrow(active, Priority.ALWAYS);
@@ -111,11 +110,78 @@ public class Browser extends Application {
 	
 	public void newTab() {
 		Tab newTab = new Tab();
+		
+		VBox banner = new VBox();
+		
+		
+		Button launch = new Button();
+		launch.setText("launch");
+		launch.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				load();
+			}
+			
+		}) ;
+		
+		Button newTabButton = new Button("New Tab");
+		newTabButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				newTab();
+			}
+			
+		});
+		
+//		tabBar.getChildren().add(newTabButton);
+		
+		
+		
+		Button forward = new Button("Forward");
+		forward.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				forward();
+			}
+			
+		});
+		
+		Button back = new Button("Back");
+		back.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				backward();
+			}
+			
+		});
+		
+		Button reload = new Button("Reload");
+		reload.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				reload();
+			}
+			
+		});
+		
+		
+		
+		HBox controlsHBox = new HBox();
+		controlsHBox.getChildren().addAll(newTabButton, back, forward, reload, textField, launch);
+		
+		
 		WebView newWebView = new WebView();
 		// The WebEngine manages web pages non-visually (loading, reloading, error handling etc)
 		String newURL = "http://" + home;
 		newWebView.getEngine().load(newURL);
-		newTab.setContent(newWebView);
+		newTab.setContent(banner);
+		banner.getChildren().add(controlsHBox);
+		banner.getChildren().add(newWebView);
 		newTab.setText(newURL);
 		tabPane.getTabs().add(newTab);
 	}
