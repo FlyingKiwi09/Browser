@@ -26,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -39,9 +40,10 @@ public class Browser extends Application {
 	
 
 	private String home = "www.google.com";
-	private VBox root = new VBox(); // root
-	private HBox mainMenu = new HBox(); //  1st/2 child of root
-	private TabPane tabPane = new TabPane(); // 2nd/2 child of root
+	private BorderPane root = new BorderPane(); // root
+	private HBox mainMenu = new HBox(); //  top of root
+	private TabPane tabPane = new TabPane(); // center of root
+	private VBox themeChooser = new VBox(); // will be right of root
 	private Style style = Style.DEFAULT;
 
 	
@@ -53,13 +55,13 @@ public class Browser extends Application {
 		
 		newTab(); // creates a new tab and adds to the tabPane
 		createMainMenu(); // creates buttons and sets their on actions and adds these to the mainmenu
+		createThemeChooser(); // creates a theme chooser VBox, does not add it to the root
 		setStyles();
 		
-		root.getChildren().addAll (mainMenu, tabPane); 
+		root.setTop(mainMenu);
+		root.setCenter(tabPane);
+		
 		// set color scheme
-		
-		
-
 		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
@@ -104,15 +106,54 @@ public class Browser extends Application {
 			
 		}) ;
 		
+		Button theme = new Button("Theme");
+		theme.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {	
+				toggleThemesDisplay();
+			}
+			
+		}) ;
+		
 		// add buttons to mainMenu
-		mainMenu.getChildren().addAll(newTabButton, history);
+		mainMenu.getChildren().addAll(newTabButton, history, theme);
 		Insets buttonInsets = new Insets(5, 0, 5, 0);
 		mainMenu.setMargin(history, buttonInsets);
 		mainMenu.setMargin(newTabButton, buttonInsets);
-		
+		mainMenu.setMargin(theme, buttonInsets);
 	}
 	
 
+	public void createThemeChooser() {
+		Button defaultTheme = new Button("Default");
+		defaultTheme.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null))); // set to white of default theme
+		defaultTheme.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				style = Style.DEFAULT;
+				setStyles();
+			}
+			
+		}) ;
+		
+		
+		Button pink = new Button("Pink");
+		defaultTheme.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, null, null))); // set to pink of default theme
+		defaultTheme.setStyle(("-fx-border-color: red; -fx-background-color: lightpink;"));
+		defaultTheme.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				style = Style.PINK;
+				setStyles();
+			}
+			
+		}) ;
+		
+		themeChooser.getChildren().addAll(defaultTheme, pink);
+	}
 	
 	public void displayHistory() {
 		
@@ -156,6 +197,16 @@ public class Browser extends Application {
 		Scene scene = new Scene(box);
 		histroyStage.setScene(scene);
 		histroyStage.show();
+		
+	}
+	
+	public void toggleThemesDisplay() {
+		
+		if (root.getRight() == null) {
+			root.setRight(themeChooser);
+		} else {
+			root.setRight(null);
+		}
 		
 	}
 
