@@ -40,7 +40,7 @@ public class TableViewHelper {
 	// returns Date TableColumn
 	public static TableColumn<WebHistory.Entry, Date> getDateColumn() 
     {
-        TableColumn<WebHistory.Entry, Date> dateCol = new TableColumn<>("Date");
+        TableColumn<WebHistory.Entry, Date> dateCol = new TableColumn<>("Last Visited");
         PropertyValueFactory<WebHistory.Entry, Date> dateCellValueFactory = new PropertyValueFactory<>("lastVisitedDate");
         dateCol.setCellValueFactory(dateCellValueFactory);
         return dateCol;

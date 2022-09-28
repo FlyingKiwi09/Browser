@@ -33,6 +33,7 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebHistory;
@@ -119,12 +120,22 @@ public class Browser extends Application {
 			@Override
 			public void handle(MouseEvent arg0) {	
 				toggleThemesDisplay();
+				if (theme.getText().equals("Theme")) {
+					theme.setText("X");
+				} else {
+					theme.setText("Theme");
+				}
 			}
 			
 		}) ;
+
+
+		Region region = new Region();
+		mainMenu.setHgrow(region, Priority.ALWAYS);
+		
 		
 		// add buttons to mainMenu
-		mainMenu.getChildren().addAll(newTabButton, history, theme);
+		mainMenu.getChildren().addAll(newTabButton, history, region, theme);
 		
 		mainMenu.getStyleClass().add("menu"); // to style elements from applicaiton.css
 		
@@ -199,7 +210,20 @@ public class Browser extends Application {
 		ArrayList<WebHistory.Entry> fullHistory = new ArrayList<>();
 		for (MyTab tab: tabs) {
 			for (WebHistory.Entry entry : tab.getEntries()) {
-				fullHistory.add(entry);
+				boolean inlist = false;
+				for (WebHistory.Entry existingEntry : fullHistory ) { // check if this URL is already in the list
+					// if already in the list && more recent, replace the entry for this URL that is already in the list
+					if (entry.getUrl().equals(existingEntry.getUrl()) && entry.getLastVisitedDate().after(existingEntry.getLastVisitedDate())) {
+						fullHistory.remove(existingEntry);
+						fullHistory.add(entry);
+						inlist = true;
+					}
+					
+						
+				}
+				if (!inlist) {
+					fullHistory.add(entry);
+				}
 			}
 		}
 		// add the full history (rows) to the TableView
@@ -278,7 +302,6 @@ public class Browser extends Application {
 		tabPane.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
 		for (Node node :mainMenu.getChildren()) {
 			if (node instanceof Button) {
-//				((Button) node).setBackground(new Background(new BackgroundFill(buttonColor, null, null)));
 				((Button) node).setStyle(("-fx-border-color: " +  borderColor + "; -fx-background-color: " +  buttonColor +";"));
 				
 			}
