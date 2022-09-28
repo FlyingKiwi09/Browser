@@ -1,5 +1,7 @@
 package application;
 	
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -63,11 +65,13 @@ public class Browser extends Application {
 		root.setCenter(tabPane);
 		
 		// set color scheme
-		
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		Scene scene = new Scene(root);
 		css = this.getClass().getResource("application.css").toExternalForm();
 		scene.getStylesheets().add(css);
 		primaryStage.setScene(scene);
+		primaryStage.setWidth(dimension.getWidth());
+		primaryStage.setHeight(dimension.getHeight());
 		primaryStage.show();
 		
 		
