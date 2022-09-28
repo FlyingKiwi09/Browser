@@ -249,18 +249,22 @@ public class Browser extends Application {
 	public void setStyles() {
 		
 		Color backgroundColor = null;
-		Color buttonColor = null;
+		String buttonColor = "white";
+		String borderColor = "lightgrey";
 		
 		// set colors based on style variable
 		if (style == Style.PINK) {		
 			backgroundColor = Color.PALEVIOLETRED;
-			buttonColor = Color.LIGHTPINK;
+			buttonColor = "lightpink";
+			borderColor = "red";
 		} else if (style == Style.BLUE) {
 			backgroundColor = Color.DODGERBLUE;
-			buttonColor = Color.SKYBLUE;
+			buttonColor = "skyblue";
+			borderColor = "cadetblue";
 		} else if (style == Style.GREEN) {
 			backgroundColor = Color.GREEN;
-			buttonColor = Color.LIGHTGREEN;
+			buttonColor = "lightgreen";
+			borderColor = "forestgreen";
 		} else if (style == Style.DEFAULT) {
 		}
 		
@@ -270,7 +274,8 @@ public class Browser extends Application {
 		tabPane.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
 		for (Node node :mainMenu.getChildren()) {
 			if (node instanceof Button) {
-				((Button) node).setBackground(new Background(new BackgroundFill(buttonColor, null, null)));
+//				((Button) node).setBackground(new Background(new BackgroundFill(buttonColor, null, null)));
+				((Button) node).setStyle(("-fx-border-color: " +  borderColor + "; -fx-background-color: " +  buttonColor +";"));
 				
 			}
 		}
@@ -278,7 +283,7 @@ public class Browser extends Application {
 		for (MyTab tab : tabs) {
 			for (Node node : tab.getControlsHBox().getChildren()) {
 				if (node instanceof Button) {
-					((Button) node).setBackground(new Background(new BackgroundFill(buttonColor, null, null)));
+					((Button) node).setStyle(("-fx-border-color: " +  borderColor + "; -fx-background-color: " +  buttonColor +";"));
 					
 				}
 			}
