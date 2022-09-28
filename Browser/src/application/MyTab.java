@@ -1,5 +1,12 @@
 package application;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.UnknownHostException;
+
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -38,7 +45,7 @@ public class MyTab extends Tab {
 
 			@Override
 			public void handle(MouseEvent arg0) {
-				load("http://"+textField.getText());
+				load(textField.getText());
 				textField.textProperty().bind(webView.getEngine().locationProperty()); // rebind the textField to the webpage URL
 			}
 			
@@ -122,7 +129,7 @@ public class MyTab extends Tab {
 			@Override
 			public void handle(KeyEvent evt) {
 			    if(evt.getCode() == KeyCode.ENTER) {
-			    	load("http://"+textField.getText());
+			    	load(textField.getText());
 					textField.textProperty().bind(webView.getEngine().locationProperty()); // rebind the textField to the webpage URL          
 			    }     
 			}
@@ -143,9 +150,26 @@ public class MyTab extends Tab {
 		
 	}
 	
-	public void load(String URL) {
-		this.webView.getEngine().load(URL);
-//		this.setText(URL);
+	public void load(String userInput) {
+		
+		// if the input doesn't already contain http: or https: add this and store it to a new variable
+		String addedInput = userInput;
+		if (!(userInput.contains("http://") || userInput.contains("https://"))) {
+			addedInput = "http://"+ userInput;
+		} 
+		
+		// attempt to open the a connection with a URL using the addedInput 
+		// note this may or may not have had http / https added depending on whether it was already present
+		// if the URL is valid the webView loads with that URL
+		// if not valid the webView opens with a google search of the ORIGINAL userInput
+		try {
+	        new URL(addedInput).openStream().close();
+	        this.webView.getEngine().load(addedInput);
+		} catch (MalformedURLException | UnknownHostException e) {
+    		this.webView.getEngine().load("http://www.google.com/search?q=" + userInput);       
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void forward() {
