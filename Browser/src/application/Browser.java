@@ -127,7 +127,7 @@ public class Browser extends Application {
 
 	public void createThemeChooser() {
 		Button defaultTheme = new Button("Default");
-		defaultTheme.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null))); // set to white of default theme
+		defaultTheme.setStyle(("-fx-border-color: grey; -fx-background-color: white;")); // set to white of default theme
 		defaultTheme.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -140,9 +140,8 @@ public class Browser extends Application {
 		
 		
 		Button pink = new Button("Pink");
-		defaultTheme.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, null, null))); // set to pink of default theme
-		defaultTheme.setStyle(("-fx-border-color: red; -fx-background-color: lightpink;"));
-		defaultTheme.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		pink.setStyle(("-fx-border-color: red; -fx-background-color: lightpink;"));
+		pink.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent arg0) {
@@ -152,7 +151,31 @@ public class Browser extends Application {
 			
 		}) ;
 		
-		themeChooser.getChildren().addAll(defaultTheme, pink);
+		Button green = new Button("Green");
+		green.setStyle(("-fx-border-color: green; -fx-background-color: lightgreen;"));
+		green.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				style = Style.GREEN;
+				setStyles();
+			}
+			
+		}) ;
+		
+		Button blue = new Button("Blue");
+		blue.setStyle(("-fx-border-color: dodgerblue; -fx-background-color: skyblue;"));
+		blue.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				style = Style.BLUE;
+				setStyles();
+			}
+			
+		}) ;
+		
+		themeChooser.getChildren().addAll(defaultTheme, pink, green, blue);
 	}
 	
 	public void displayHistory() {
