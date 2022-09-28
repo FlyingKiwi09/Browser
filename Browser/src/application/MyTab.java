@@ -33,10 +33,12 @@ public class MyTab extends Tab {
 	private WebHistory history;
 	private ObservableList<WebHistory.Entry> entries;
 	private HBox controlsHBox = new HBox();
+	private Browser myBrowser;
 	
 	String URL;
 
-	public MyTab() { 
+	public MyTab(Browser browser) { 
+		myBrowser = browser;
 		history = webView.getEngine().getHistory();
 		entries = history.getEntries();
 		zoomLevel = 1;
@@ -49,6 +51,16 @@ public class MyTab extends Tab {
 			public void handle(MouseEvent arg0) {
 				load(textField.getText());
 				textField.textProperty().bind(webView.getEngine().locationProperty()); // rebind the textField to the webpage URL
+			}
+			
+		}) ;
+		
+		Button goHome = new Button("Home");
+		goHome.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {	
+				load(browser.getHome());
 			}
 			
 		}) ;
@@ -106,14 +118,9 @@ public class MyTab extends Tab {
 		
 		
 		
-		
 		// bind the title of the webpage to the tab text
 		this.textProperty().bind(webView.getEngine().titleProperty());
-		
-		//Set growth parameters
-		
-		
-		
+
 		
 		// set up the textField
 		
@@ -147,7 +154,7 @@ public class MyTab extends Tab {
 	
 	
 		
-		controlsHBox.getChildren().addAll(back, forward, reload, textField, go, zoomOut, zoomIn);
+		controlsHBox.getChildren().addAll(goHome, back, forward, reload, textField, go, zoomOut, zoomIn);
 		controlsHBox.getStyleClass().add("menu");
 		
 		

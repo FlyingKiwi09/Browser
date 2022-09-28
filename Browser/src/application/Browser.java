@@ -43,7 +43,7 @@ import javafx.scene.web.WebView;
 public class Browser extends Application {
 	
 
-	private String home = "www.google.com";
+	private String home = "https://www.google.com";
 	private BorderPane root = new BorderPane(); // root
 	private HBox mainMenu = new HBox(); //  top of root
 	private TabPane tabPane = new TabPane(); // center of root
@@ -83,8 +83,8 @@ public class Browser extends Application {
 	}
 	
 	public void newTab() {
-		MyTab newTab = new MyTab();
-		newTab.load("http://"+home);
+		MyTab newTab = new MyTab(this);
+		newTab.load(home);
 		tabs.add(newTab);
 		tabPane.getTabs().add(newTab);
 		setStyles();
@@ -114,6 +114,19 @@ public class Browser extends Application {
 			
 		}) ;
 		
+		
+		
+		Button setHome = new Button("Set Home");
+		setHome.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {	
+				
+			}
+			
+		}) ;
+		
+		
 		Button theme = new Button("Theme");
 		theme.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -135,7 +148,7 @@ public class Browser extends Application {
 		
 		
 		// add buttons to mainMenu
-		mainMenu.getChildren().addAll(newTabButton, history, region, theme);
+		mainMenu.getChildren().addAll(newTabButton, history, setHome, region, theme);
 		
 		mainMenu.getStyleClass().add("menu"); // to style elements from applicaiton.css
 		
@@ -317,6 +330,15 @@ public class Browser extends Application {
 		}
 		
 	}
+
+	public String getHome() {
+		return home;
+	}
+
+	public void setHome(String home) {
+		this.home = home;
+	}
+	
 	
 
 }
