@@ -3,41 +3,31 @@ package application;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.util.Callback;
+import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebHistory;
-import javafx.scene.web.WebView;
+
 
 
 public class Browser extends Application {
@@ -50,13 +40,14 @@ public class Browser extends Application {
 	private VBox themeChooser = new VBox(); // will be right of root
 	private Style style = Style.DEFAULT;
 	private String css;
+	private Stage primaryStage;
 	
 	private ArrayList<MyTab> tabs = new ArrayList<MyTab>(); // list of tabs each contains it's own WebView
 	
 	
 	@Override
 	public void start(Stage primaryStage) {
-		
+		this.primaryStage = primaryStage;
 		newTab(); // creates a new tab and adds to the tabPane
 		createMainMenu(); // creates buttons and sets their on actions and adds these to the mainmenu
 		createThemeChooser(); // creates a theme chooser VBox, does not add it to the root
@@ -121,7 +112,25 @@ public class Browser extends Application {
 
 			@Override
 			public void handle(MouseEvent arg0) {	
-				
+				for (MyTab tab : tabs) {
+					if (tab.isSelected()) {
+						home = tab.getWebView().getEngine().getLocation();
+						Popup popUp = new Popup();
+						Label message = new Label("Home page set to: " + home);
+						Pane pane = new Pane();
+						pane.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+						pane.getChildren().add(message);
+						popUp.getContent().add(pane);
+						popUp.show(primaryStage);
+						
+						 PauseTransition wait = new PauseTransition(Duration.seconds(3));
+				            wait.setOnFinished((e) -> {
+				            	popUp.hide();
+				         });
+				         
+				            wait.play();
+					}
+				}
 			}
 			
 		}) ;
