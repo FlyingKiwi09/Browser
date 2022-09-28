@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.scene.Node;
@@ -45,7 +46,7 @@ public class Browser extends Application {
 	private TabPane tabPane = new TabPane(); // center of root
 	private VBox themeChooser = new VBox(); // will be right of root
 	private Style style = Style.DEFAULT;
-
+	private String css;
 	
 	private ArrayList<MyTab> tabs = new ArrayList<MyTab>(); // list of tabs each contains it's own WebView
 	
@@ -64,6 +65,8 @@ public class Browser extends Application {
 		// set color scheme
 		
 		Scene scene = new Scene(root);
+		css = this.getClass().getResource("application.css").toExternalForm();
+		scene.getStylesheets().add(css);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
@@ -118,10 +121,9 @@ public class Browser extends Application {
 		
 		// add buttons to mainMenu
 		mainMenu.getChildren().addAll(newTabButton, history, theme);
-		Insets buttonInsets = new Insets(5, 0, 5, 0);
-		mainMenu.setMargin(history, buttonInsets);
-		mainMenu.setMargin(newTabButton, buttonInsets);
-		mainMenu.setMargin(theme, buttonInsets);
+		
+		mainMenu.getStyleClass().add("menu"); // to style elements from applicaiton.css
+		
 	}
 	
 
@@ -176,6 +178,9 @@ public class Browser extends Application {
 		}) ;
 		
 		themeChooser.getChildren().addAll(defaultTheme, pink, green, blue);
+		themeChooser.setAlignment(Pos.TOP_CENTER);
+		themeChooser.setPrefWidth(150);
+		themeChooser.getStyleClass().add("themeChooser"); // to style elements from applicaiton.css
 	}
 	
 	public void displayHistory() {

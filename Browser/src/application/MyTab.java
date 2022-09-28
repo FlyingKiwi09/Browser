@@ -148,7 +148,7 @@ public class MyTab extends Tab {
 	
 		
 		controlsHBox.getChildren().addAll(back, forward, reload, textField, go, zoomOut, zoomIn);
-		
+		controlsHBox.getStyleClass().add("menu");
 		
 		
 		// The WebEngine manages web pages non-visually (loading, reloading, error handling etc)

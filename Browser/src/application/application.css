@@ -1,1 +1,39 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.menu > .button {
+	-fx-padding: 5px;
+	-fx-border-insets: 5px;
+	-fx-background-insets: 5px;
+	-fx-border-color: lightgrey ;
+    -fx-border-width: 1, 0, 1, 0 ;
+}
+
+.menu > .text-field {
+	-fx-padding: 5px;
+	-fx-border-insets: 5px;
+	-fx-background-insets: 5px;
+	-fx-border-color: lightgrey ;
+    -fx-border-width: 1;
+}
+
+
+.button:pressed {
+	-fx-scale-y: 0.9;
+	-fx-scale-x: 0.9;
+}
+
+.button:hover {
+	-fx-scale-y: 1.1;
+	-fx-scale-x: 1.1;
+}
+
+.themeChooser > .button {
+	-fx-padding: 5px;
+	-fx-border-insets: 5px;
+	-fx-background-insets: 5px;
+	-fx-min-width: 120px;
+}
+
+
+
+
