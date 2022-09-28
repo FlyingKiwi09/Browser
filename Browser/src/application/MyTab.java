@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebHistory;
@@ -108,8 +109,15 @@ public class MyTab extends Tab {
 		// bind the title of the webpage to the tab text
 		this.textProperty().bind(webView.getEngine().titleProperty());
 		
+		//Set growth parameters
+		
+		
+		
 		
 		// set up the textField
+		
+		// always grow
+		HBox.setHgrow(textField, Priority.ALWAYS);
 
 		// bind the url of the webpage to the textField
 		textField.textProperty().bind(webView.getEngine().locationProperty());

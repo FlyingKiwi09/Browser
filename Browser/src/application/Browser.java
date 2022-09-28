@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.scene.Scene;
@@ -22,61 +23,42 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 
 
 public class Browser extends Application {
 	
-	private WebView active = new WebView();
+
 	private String home = "www.google.com";
-	private TextField textField = new TextField();
-//	private HBox tabBar = new HBox(); 
-	private TabPane tabPane = new TabPane();
-	private HashMap<Tab, WebView> tabViewMap = new HashMap<Tab, WebView >();
-	private ArrayList<MyTab> tabs = new ArrayList<MyTab>();
+	private VBox root = new VBox(); // root
+	private HBox mainMenu = new HBox(); //  1st/2 child of root
+	private TabPane tabPane = new TabPane(); // 2nd/2 child of root
+	private Style style = Style.RED;
+
+	
+	private ArrayList<MyTab> tabs = new ArrayList<MyTab>(); // list of tabs each contains it's own WebView
 	
 	
 	@Override
 	public void start(Stage primaryStage) {
-	
+		
+		newTab(); // creates a new tab and adds to the tabPane
+		createMainMenu(); // creates buttons and sets their on actions and adds these to the mainmenu
+		
+		root.getChildren().addAll (mainMenu, tabPane); 
+		
+		// set color scheme
 		
 		
-		newTab();
-		HBox mainMenu = new HBox();
-		Button newTabButton = new Button("New Tab");
-		newTabButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-			@Override
-			public void handle(MouseEvent arg0) {
-				newTab();
-			}
-			
-		}) ;
-		
-		Button history = new Button("History");
-		history.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				displayHistory();
-			}
-			
-		}) ;
-		
-		
-		mainMenu.getChildren().addAll(newTabButton, history);
-		
-		VBox root = new VBox();
-		root.getChildren().addAll (mainMenu, tabPane);
-		
-		//Set growth parameters
-		VBox.setVgrow(active, Priority.ALWAYS);
-		HBox.setHgrow(textField, Priority.ALWAYS);
 		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
@@ -97,46 +79,41 @@ public class Browser extends Application {
 
 	}
 	
-	public void reloadTabs(WebView view, String URL) {
-//		activeURL = textField.getText();
-		active = view;
+	public void createMainMenu() {
+		
+		// new tab button
+		Button newTabButton = new Button("New Tab");
+		newTabButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				newTab();
+			}
+			
+		}) ;
+		
+		// display history button
+		Button history = new Button("History");
+		history.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				displayHistory();
+			}
+			
+		}) ;
+		
+		// add buttons to mainMenu
+		mainMenu.getChildren().addAll(newTabButton, history);
+		Insets buttonInsets = new Insets(5, 0, 5, 0);
+		mainMenu.setMargin(history, buttonInsets);
+		mainMenu.setMargin(newTabButton, buttonInsets);
 		
 	}
 	
-	
-	
-	private void load(WebView webView) {
-		String newURL = "http://" + textField.getText();
-		webView.getEngine().load(newURL);
-//		tabButtonMap.get(active).setText(newURL);
-	}
-	
-	private void forward() {
-		WebHistory history = active.getEngine().getHistory();
-		ObservableList<WebHistory.Entry> entries = history.getEntries();
-		history.go(1);
-	}
-	
-	private void reload() {
-		active.getEngine().reload();
-	}
-	
-	private void backward() {
-		WebHistory history = active.getEngine().getHistory();
-		ObservableList<WebHistory.Entry> entries = history.getEntries();
-		history.go(-1);
-	}
+
 	
 	public void displayHistory() {
-		for (MyTab tab : tabs) {
-			WebHistory history = tab.getWebView().getEngine().getHistory();
-			ObservableList<WebHistory.Entry> entries = history.getEntries();
-			
-			for (WebHistory.Entry entry: entries) {
-				System.out.println(entry);
-			}
-			
-		}
 		
 		Stage histroyStage = new Stage();
 		VBox box = new VBox();
@@ -180,8 +157,22 @@ public class Browser extends Application {
 		histroyStage.show();
 		
 	}
-	
 
+	public Style getStyle() {
+		return style;
+	}
+
+	public void setStyle(Style style) {
+		this.style = style;
+	}
+	
+	public void setStyles() {
+		if (style == Style.RED) {
+			root.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+			
+			tabPane.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+		}
+	}
 	
 
 }
