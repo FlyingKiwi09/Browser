@@ -248,20 +248,7 @@ public class Browser extends Application {
 		ArrayList<WebHistory.Entry> fullHistory = new ArrayList<>();
 		for (MyTab tab: tabs) {
 			for (WebHistory.Entry entry : tab.getEntries()) {
-				boolean inlist = false;
-				for (WebHistory.Entry existingEntry : fullHistory ) { // check if this URL is already in the list
-					// if already in the list && more recent, replace the entry for this URL that is already in the list
-					if (entry.getUrl().equals(existingEntry.getUrl()) && entry.getLastVisitedDate().after(existingEntry.getLastVisitedDate())) {
-						fullHistory.remove(existingEntry);
-						fullHistory.add(entry);
-						inlist = true;
-					}
-					
-						
-				}
-				if (!inlist) {
-					fullHistory.add(entry);
-				}
+				fullHistory.add(entry);
 			}
 		}
 		// add the full history (rows) to the TableView
@@ -382,8 +369,7 @@ public class Browser extends Application {
 	        }
 	        toPrint.getTransforms().remove(scale);
 		}
-		
-		
+
 	}
 
 	public String getHome() {
