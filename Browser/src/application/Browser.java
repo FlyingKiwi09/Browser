@@ -7,6 +7,11 @@ import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -26,7 +31,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Scale;
 import javafx.scene.web.WebHistory;
+import javafx.scene.web.WebView;
 
 
 
@@ -135,6 +142,15 @@ public class Browser extends Application {
 			
 		}) ;
 		
+		Button print = new Button("Print");
+		print.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				print();
+			}
+			
+		}) ;
 		
 		Button theme = new Button("Theme");
 		theme.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -157,7 +173,7 @@ public class Browser extends Application {
 		
 		
 		// add buttons to mainMenu
-		mainMenu.getChildren().addAll(newTabButton, history, setHome, region, theme);
+		mainMenu.getChildren().addAll(newTabButton, history, setHome, print, region, theme);
 		
 		mainMenu.getStyleClass().add("menu"); // to style elements from applicaiton.css
 		
@@ -337,6 +353,36 @@ public class Browser extends Application {
 				}
 			}
 		}
+		
+	}
+	
+	// https://carlfx.wordpress.com/2013/07/15/introduction-by-example-javafx-8-printing/
+	public void print() {
+		WebView toPrint = null;
+		
+		for (MyTab tab: tabs) {
+			if (tab.isSelected()) {
+				toPrint = tab.getWebView();
+			}
+		}
+		
+		if (toPrint != null) {
+			Printer printer = Printer.getDefaultPrinter();
+	        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+	        double scaleX = pageLayout.getPrintableWidth() / toPrint.getBoundsInParent().getWidth();
+	        Scale scale = new Scale(scaleX, scaleX); // uses the same scale for the x and y scale so that the proportions of the view are maintained.
+	        toPrint.getTransforms().add(scale);
+	 
+	        PrinterJob job = PrinterJob.createPrinterJob();
+	        if (job != null) {
+	            boolean success = job.printPage(toPrint);
+	            if (success) {
+	                job.endJob();
+	            }
+	        }
+	        toPrint.getTransforms().remove(scale);
+		}
+		
 		
 	}
 
