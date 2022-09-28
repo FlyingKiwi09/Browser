@@ -7,14 +7,18 @@ import java.util.Set;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -151,7 +155,11 @@ public class Browser extends Application {
 		historyTable.getItems().addAll(fullHistory);
 		
 		// add columns to the TableView
-		historyTable.getColumns().addAll(TableViewHelper.getTitleColumn(), TableViewHelper.getDateColumn());
+		historyTable.getColumns().addAll(TableViewHelper.getURLColumn(), TableViewHelper.getDateColumn());
+		
+//		https://riptutorial.com/javafx/example/27946/add-button-to-tableview?fbclid=IwAR06vYPI2stH6LaHUsWEYOfIXoooWINfaGn0fX9OR6_R9Ea1GzeiMVBWYLA#:~:text=Example%23,setCellFactory(Callback%20value)%20method.&text=In%20this%20application%20we%20are,selected%20and%20its%20information%20printed
+//		addButtonToTable(historyTable); // calls method to create buttons
+		
 		
 		// Set the column resize policy to constrained resize policy
 		historyTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -172,5 +180,8 @@ public class Browser extends Application {
 		histroyStage.show();
 		
 	}
+	
+
+	
 
 }
