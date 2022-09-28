@@ -223,6 +223,15 @@ public class MyTab extends Tab {
 	public void setWebView(WebView webView) {
 		this.webView = webView;
 	}
+
+	public ObservableList<WebHistory.Entry> getEntries() {
+		return entries;
+	}
+
+	public void setEntries(ObservableList<WebHistory.Entry> entries) {
+		this.entries = entries;
+	}
+	
 	
 	
 	

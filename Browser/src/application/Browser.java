@@ -12,8 +12,10 @@ import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -131,6 +133,44 @@ public class Browser extends Application {
 			}
 			
 		}
+		
+		Stage histroyStage = new Stage();
+		VBox box = new VBox();
+		
+		// create a table view with a list of WebHistory entries
+		TableView<WebHistory.Entry> historyTable = new TableView<>();
+		
+		// create a combined list of history entries from all tabs
+		ArrayList<WebHistory.Entry> fullHistory = new ArrayList<>();
+		for (MyTab tab: tabs) {
+			for (WebHistory.Entry entry : tab.getEntries()) {
+				fullHistory.add(entry);
+			}
+		}
+		// add the full history (rows) to the TableView
+		historyTable.getItems().addAll(fullHistory);
+		
+		// add columns to the TableView
+		historyTable.getColumns().addAll(TableViewHelper.getTitleColumn(), TableViewHelper.getDateColumn());
+		
+		// Set the column resize policy to constrained resize policy
+		historyTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        // Set the Placeholder for an empty table
+		historyTable.setPlaceholder(new Label("No visible columns and/or data exist."));
+		
+		box.getChildren().add(historyTable);
+		
+		box.setStyle("-fx-padding: 10;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 5;" +
+                "-fx-border-radius: 5;" +
+                "-fx-border-color: blue;");
+		
+		Scene scene = new Scene(box);
+		histroyStage.setScene(scene);
+		histroyStage.show();
+		
 	}
 
 }
