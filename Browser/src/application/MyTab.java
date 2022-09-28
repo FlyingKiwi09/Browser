@@ -32,6 +32,7 @@ public class MyTab extends Tab {
 	private double zoomLevel;
 	private WebHistory history;
 	private ObservableList<WebHistory.Entry> entries;
+	private HBox controlsHBox = new HBox();
 	
 	String URL;
 
@@ -145,7 +146,7 @@ public class MyTab extends Tab {
 		});
 	
 	
-		HBox controlsHBox = new HBox();
+		
 		controlsHBox.getChildren().addAll(back, forward, reload, textField, go, zoomOut, zoomIn);
 		
 		
@@ -238,6 +239,14 @@ public class MyTab extends Tab {
 
 	public void setEntries(ObservableList<WebHistory.Entry> entries) {
 		this.entries = entries;
+	}
+
+	public HBox getControlsHBox() {
+		return controlsHBox;
+	}
+
+	public void setControlsHBox(HBox controlsHBox) {
+		this.controlsHBox = controlsHBox;
 	}
 	
 	

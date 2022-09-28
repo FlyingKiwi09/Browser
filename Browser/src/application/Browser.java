@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,7 +42,7 @@ public class Browser extends Application {
 	private VBox root = new VBox(); // root
 	private HBox mainMenu = new HBox(); //  1st/2 child of root
 	private TabPane tabPane = new TabPane(); // 2nd/2 child of root
-	private Style style = Style.RED;
+	private Style style = Style.DEFAULT;
 
 	
 	private ArrayList<MyTab> tabs = new ArrayList<MyTab>(); // list of tabs each contains it's own WebView
@@ -52,9 +53,9 @@ public class Browser extends Application {
 		
 		newTab(); // creates a new tab and adds to the tabPane
 		createMainMenu(); // creates buttons and sets their on actions and adds these to the mainmenu
+		setStyles();
 		
 		root.getChildren().addAll (mainMenu, tabPane); 
-		
 		// set color scheme
 		
 		
@@ -76,7 +77,7 @@ public class Browser extends Application {
 		newTab.load("http://"+home);
 		tabs.add(newTab);
 		tabPane.getTabs().add(newTab);
-
+		setStyles();
 	}
 	
 	public void createMainMenu() {
@@ -167,11 +168,43 @@ public class Browser extends Application {
 	}
 	
 	public void setStyles() {
-		if (style == Style.RED) {
-			root.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
-			
-			tabPane.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+		
+		Color backgroundColor = null;
+		Color buttonColor = null;
+		
+		// set colors based on style variable
+		if (style == Style.PINK) {		
+			backgroundColor = Color.PALEVIOLETRED;
+			buttonColor = Color.LIGHTPINK;
+		} else if (style == Style.BLUE) {
+			backgroundColor = Color.DODGERBLUE;
+			buttonColor = Color.SKYBLUE;
+		} else if (style == Style.GREEN) {
+			backgroundColor = Color.GREEN;
+			buttonColor = Color.LIGHTGREEN;
+		} else if (style == Style.DEFAULT) {
 		}
+		
+		
+		// set backgrounds and buttons to colors
+		root.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
+		tabPane.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
+		for (Node node :mainMenu.getChildren()) {
+			if (node instanceof Button) {
+				((Button) node).setBackground(new Background(new BackgroundFill(buttonColor, null, null)));
+				
+			}
+		}
+		
+		for (MyTab tab : tabs) {
+			for (Node node : tab.getControlsHBox().getChildren()) {
+				if (node instanceof Button) {
+					((Button) node).setBackground(new Background(new BackgroundFill(buttonColor, null, null)));
+					
+				}
+			}
+		}
+		
 	}
 	
 
