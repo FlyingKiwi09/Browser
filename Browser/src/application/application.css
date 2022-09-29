@@ -1,5 +1,6 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
+
 .menu > .button {
 	-fx-padding: 5px;
 	-fx-border-insets: 5px;
@@ -14,6 +15,12 @@
 	-fx-background-insets: 5px;
 	-fx-border-color: lightgrey ;
     -fx-border-width: 1;
+}
+
+.menu > .menu-bar {
+	-fx-border-color: lightgrey ;
+    -fx-border-width: 1;
+   
 }
 
 

@@ -8,8 +8,10 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -162,6 +164,21 @@ public class MyTab extends Tab {
 		Tooltip zoomOutTip = new Tooltip("Zoom Out");
 		Tooltip.install(zoomOut, zoomOutTip);
 		
+		// save button
+		Button save = new Button("Save");
+		save.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				MenuItem webHistoryItem = new MenuItem(webView.getEngine().getLocation());
+				browser.getBookmarks().getItems().add(webHistoryItem);
+				
+				setOnClick(webHistoryItem);
+			}
+			
+		});
+		
+		
 		
 		// bind the title of the webpage to the tab text
 		this.textProperty().bind(webView.getEngine().titleProperty());
@@ -199,7 +216,7 @@ public class MyTab extends Tab {
 	
 	
 		
-		controlsHBox.getChildren().addAll(goHome, back, forward, reload, textField, go, zoomOut, zoomIn);
+		controlsHBox.getChildren().addAll(goHome, back, forward, reload, textField, go, save, zoomOut, zoomIn);
 		controlsHBox.getStyleClass().add("menu");
 		
 		
@@ -209,6 +226,22 @@ public class MyTab extends Tab {
 		banner.getChildren().add(controlsHBox);
 		banner.getChildren().add(this.webView);
 		
+	}
+	
+	public void setOnClick(MenuItem item) {
+		item.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				for(MyTab tab: myBrowser.getTabs()) {
+					if (tab.isSelected()) {
+						tab.getWebView().getEngine().load(item.getText());
+					}
+				}
+				
+			}
+			
+		});
 	}
 	
 	public void load(String userInput) {

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.print.PageLayout;
 import javafx.print.PageOrientation;
@@ -19,6 +20,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -48,6 +51,9 @@ public class Browser extends Application {
 	private Style style = Style.DEFAULT;
 	private String css;
 	private Stage primaryStage;
+//	private ArrayList<String> bookmarks = new ArrayList<String>();
+	private MenuBar menuBar = new MenuBar();
+	private Menu bookmarks = new Menu("Bookmarks");
 	
 	private ArrayList<MyTab> tabs = new ArrayList<MyTab>(); // list of tabs each contains it's own WebView
 	
@@ -170,9 +176,12 @@ public class Browser extends Application {
 		Region region = new Region();
 		mainMenu.setHgrow(region, Priority.ALWAYS);
 		
+		menuBar.getMenus().add(bookmarks);
+		
 		
 		// add buttons to mainMenu
-		mainMenu.getChildren().addAll(newTabButton, history, setHome, print, region, theme);
+		mainMenu.getChildren().addAll(newTabButton, history, setHome, print, menuBar, region, theme);
+		mainMenu.setMargin(menuBar, new Insets(5));
 		
 		mainMenu.getStyleClass().add("menu"); // to style elements from applicaiton.css
 		
@@ -379,6 +388,24 @@ public class Browser extends Application {
 	public void setHome(String home) {
 		this.home = home;
 	}
+
+	public Menu getBookmarks() {
+		return bookmarks;
+	}
+
+	public void setBookmarks(Menu bookmarks) {
+		this.bookmarks = bookmarks;
+	}
+
+	public ArrayList<MyTab> getTabs() {
+		return tabs;
+	}
+
+	public void setTabs(ArrayList<MyTab> tabs) {
+		this.tabs = tabs;
+	}
+
+	
 	
 	
 
