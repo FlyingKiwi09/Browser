@@ -334,6 +334,7 @@ public class Browser extends Application {
 		// set backgrounds and buttons to colors
 		root.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
 		tabPane.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
+		menuBar.setStyle("-fx-border-color: " +  borderColor + "; -fx-background-color: " +  buttonColor +";");
 		for (Node node :mainMenu.getChildren()) {
 			if (node instanceof Button) {
 				((Button) node).setStyle(("-fx-border-color: " +  borderColor + "; -fx-background-color: " +  buttonColor +";"));
