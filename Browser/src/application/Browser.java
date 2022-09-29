@@ -63,14 +63,13 @@ public class Browser extends Application {
 		root.setTop(mainMenu);
 		root.setCenter(tabPane);
 		
-		// set color scheme
-		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		// set up scene and primary stage
 		Scene scene = new Scene(root);
 		css = this.getClass().getResource("application.css").toExternalForm();
 		scene.getStylesheets().add(css);
 		primaryStage.setScene(scene);
-		primaryStage.setWidth(dimension.getWidth());
-		primaryStage.setHeight(dimension.getHeight());
+		primaryStage.setMaximized(true);
+		primaryStage.setTitle("Browser");
 		primaryStage.show();
 		
 		
@@ -277,6 +276,7 @@ public class Browser extends Application {
 		
 		Scene scene = new Scene(box);
 		histroyStage.setScene(scene);
+		histroyStage.setTitle("Browser History");
 		histroyStage.show();
 		
 	}

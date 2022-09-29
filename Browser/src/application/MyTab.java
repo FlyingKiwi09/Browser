@@ -12,6 +12,9 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -55,7 +58,12 @@ public class MyTab extends Tab {
 			
 		}) ;
 		
-		Button goHome = new Button("Home");
+		
+		Image homeIcon = new Image(getClass().getResourceAsStream("/Home-icon.png"), 15, 15,true,true);
+		ImageView homeIconView = new ImageView(homeIcon);
+		
+		Button goHome = new Button();
+		goHome.setGraphic(homeIconView);
 		goHome.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -64,9 +72,16 @@ public class MyTab extends Tab {
 			}
 			
 		}) ;
-
 		
-		Button forward = new Button("Forward");
+		Tooltip goHomeTip = new Tooltip("Go to home page.");
+		Tooltip.install(goHome, goHomeTip);
+
+		// forward button with image and tool tip
+		Image forwardIcon = new Image(getClass().getResourceAsStream("/right-arrow.png"), 15, 20,true,true);
+		ImageView forwardIconView = new ImageView(forwardIcon);
+		
+		Button forward = new Button();
+		forward.setGraphic(forwardIconView);
 		forward.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -75,8 +90,17 @@ public class MyTab extends Tab {
 			}
 			
 		});
+		Tooltip forwardTip = new Tooltip("Forward");
+		Tooltip.install(forward, forwardTip);
 		
-		Button back = new Button("Back");
+		
+		// back button with image and tool tip
+		Image backIcon = new Image(getClass().getResourceAsStream("/right-arrow.png"), 15, 20,true,true);
+		ImageView backIconView = new ImageView(backIcon);
+		backIconView.setRotate(180); // to rotate the forward button 180 degress
+		
+		Button back = new Button();
+		back.setGraphic(backIconView);
 		back.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -86,7 +110,16 @@ public class MyTab extends Tab {
 			
 		});
 		
-		Button reload = new Button("Reload");
+		Tooltip backTip = new Tooltip("Back");
+		Tooltip.install(back, backTip);
+		
+		
+		// refresh button with image and tool tip
+		Image refreshIcon = new Image(getClass().getResourceAsStream("/refresh.png"), 15, 15,true,true);
+		ImageView refreshIconView = new ImageView(refreshIcon);
+		
+		Button reload = new Button();
+		reload.setGraphic(refreshIconView);
 		reload.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -96,6 +129,11 @@ public class MyTab extends Tab {
 			
 		});
 		
+		Tooltip refreshTip = new Tooltip("Refresh");
+		Tooltip.install(reload, refreshTip);
+		
+		
+		// zoom in button with tool tip
 		Button zoomIn = new Button("+");
 		zoomIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -106,6 +144,11 @@ public class MyTab extends Tab {
 			
 		});
 		
+		Tooltip zoomInTip = new Tooltip("Zoom In");
+		Tooltip.install(zoomIn, zoomInTip);
+		
+		
+		// zoom out button with tooltip
 		Button zoomOut = new Button("-");
 		zoomOut.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -116,6 +159,8 @@ public class MyTab extends Tab {
 			
 		});
 		
+		Tooltip zoomOutTip = new Tooltip("Zoom Out");
+		Tooltip.install(zoomOut, zoomOutTip);
 		
 		
 		// bind the title of the webpage to the tab text

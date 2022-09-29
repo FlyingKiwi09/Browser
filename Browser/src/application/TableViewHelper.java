@@ -30,17 +30,13 @@ public class TableViewHelper {
         PropertyValueFactory<WebHistory.Entry, String> urlCellValueFactory = new PropertyValueFactory<>("url");
         urlCol.setCellValueFactory(urlCellValueFactory);
         return urlCol;
-    }
-	
-	
-	
-	
+    }	
 	
 	
 	// returns Date TableColumn
 	public static TableColumn<WebHistory.Entry, Date> getDateColumn() 
     {
-        TableColumn<WebHistory.Entry, Date> dateCol = new TableColumn<>("Last Visited");
+        TableColumn<WebHistory.Entry, Date> dateCol = new TableColumn<>("Date");
         PropertyValueFactory<WebHistory.Entry, Date> dateCellValueFactory = new PropertyValueFactory<>("lastVisitedDate");
         dateCol.setCellValueFactory(dateCellValueFactory);
         return dateCol;
