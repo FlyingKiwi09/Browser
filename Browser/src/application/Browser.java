@@ -51,7 +51,6 @@ public class Browser extends Application {
 	private Style style = Style.DEFAULT;
 	private String css;
 	private Stage primaryStage;
-//	private ArrayList<String> bookmarks = new ArrayList<String>();
 	private MenuBar menuBar = new MenuBar();
 	private Menu bookmarks = new Menu("Bookmarks");
 	
@@ -255,9 +254,12 @@ public class Browser extends Application {
 		// create a combined list of history entries from all tabs
 		ArrayList<WebHistory.Entry> fullHistory = new ArrayList<>();
 		for (MyTab tab: tabs) {
-			for (WebHistory.Entry entry : tab.getEntries()) {
+			for (WebHistory.Entry entry : tab.getEntries()) {			
 				fullHistory.add(entry);
 			}
+			
+			fullHistory = deleteMultiples(fullHistory);
+			
 		}
 		// add the full history (rows) to the TableView
 		historyTable.getItems().addAll(fullHistory);
@@ -406,7 +408,24 @@ public class Browser extends Application {
 		this.tabs = tabs;
 	}
 
-	
+	public ArrayList<WebHistory.Entry>  deleteMultiples(ArrayList<WebHistory.Entry> fullHistory){
+		
+		ArrayList<WebHistory.Entry> copy = fullHistory;
+		
+		
+		for (int i =0; i < fullHistory.size(); i++) {
+			WebHistory.Entry entry = fullHistory.get(i);
+			for (int j = 0; j < copy.size(); j++) {
+				if ((entry.getUrl().equals(copy.get(j).getUrl()) && entry.getLastVisitedDate().before(copy.get(j).getLastVisitedDate()))){
+					fullHistory.remove(i);
+				}
+			}
+		}
+		
+		
+		return fullHistory;
+		
+	}
 	
 	
 
